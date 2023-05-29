@@ -38,3 +38,6 @@ out/
 
 ### config file ###
 src/main/java/com/stock/app/config
+
+### docker data files ###
+data/
