@@ -1,17 +1,15 @@
 package com.stock.app.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
+@Getter @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class News {
 
     @Id
@@ -20,7 +18,12 @@ public class News {
     private Long news_id;
 
     private String title;
-    private String content;
-    private String url;
+    private String description;
+    private String originalLink;
 
+    public News(String title, String description, String originalLink) {
+        this.title = title;
+        this.description = description;
+        this.originalLink = originalLink;
+    }
 }
