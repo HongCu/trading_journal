@@ -1,7 +1,7 @@
 version: "3"
 services:
   db:
-    image: mysql:5.7
+    image: mysql_trading:5.7
     platform: linux/amd64
     container_name: crawl
     ports:
@@ -17,4 +17,4 @@ services:
       - --collation-server=utf8mb4_unicode_ci
     volumes:
       - ./data/:/var/lib/mysql # -v 옵션 (다렉토리 마운트 설정)
-      - ./init:/docker-entrypoint-initdb.d
+#      - ./init:/docker-entrypoint-initdb.d

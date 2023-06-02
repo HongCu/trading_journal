@@ -26,6 +26,11 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	runtimeOnly 'org.webjars:bootstrap:4.5.0'
+
 	testImplementation 'com.h2database:h2'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

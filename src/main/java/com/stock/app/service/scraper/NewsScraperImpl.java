@@ -1,9 +1,5 @@
 package com.stock.app.service.scraper;
 
-import com.stock.app.config.NaverConfig;
-import com.stock.app.entity.News;
-import com.stock.app.repository.NewsRepository;
-import com.stock.app.service.ScraperService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -12,76 +8,18 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
-import javax.json.JsonObject;
-import javax.json.stream.JsonParser;
-import javax.transaction.Transactional;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class NewsScraperImpl implements NewsSraper{
+public class NewsScraperImpl{
 
-    private final ScraperService scraperService;
-    private final NewsRepository newsRepository;
-
-    @Override
-    public Map<String, Object> scrap(String text, String[] fields) {
-        String clientId = NaverConfig.client.getId();
-        String clientSecret = NaverConfig.client.getSecret();
-
-        try {
-            text = URLEncoder.encode(text, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("검색어 인코딩 실패",e);
-        }
-
-        String apiURL = "https://openapi.naver.com/v1/search/news?query=" + text;    // JSON 결과
-
-        Map<String, String> requestHeaders = new HashMap<>();
-        requestHeaders.put("X-Naver-Client-Id", clientId);
-        requestHeaders.put("X-Naver-Client-Secret", clientSecret);
-        String responseBody = get(apiURL, requestHeaders);
-
-        Map<String, Object> response = getResult(responseBody, fields);
-        saveNews(response);
-
-        return response;
-        /**
-         * TODO : news repository에 저장  : Ok
-         * TODO : JSON 형태로 변환  : Ok
-         */
-    }
-
-    @Transactional
-    public void saveNews(Map<String, Object> response) {
-        // response에서 값 추출하여 저장
-        List<Map<String, Object>> resultList = (List<Map<String, Object>>) response.get("result");
-
-        for (Map<String, Object> result : resultList) {
-            News news = new News();
-            String title = (String) result.get("title");
-            String originalLink = (String) result.get("originallink");
-            String description = (String) result.get("description");
-
-            news.setOriginalLink(originalLink);
-            news.setDescription(description);
-            news.setTitle(title);
-
-            scraperService.saveNews(news);
-
-            News byId = newsRepository.findById(news.getNews_id()).get();
-
-            log.info("저장 Id={}", byId);
-        }
-    }
-
-    private Map<String, Object> getResult(String responseBody, String[] fields) {
+    public Map<String, Object> getResult(String responseBody, String[] fields) {
 
         Map<String, Object> resultMap = new HashMap<>();
         try {
@@ -111,7 +49,7 @@ public class NewsScraperImpl implements NewsSraper{
 
     }
 
-    private String get(String apiUrl, Map<String, String> requestHeaders){
+    public String get(String apiUrl, Map<String, String> requestHeaders){
         HttpURLConnection con = connect(apiUrl);
         try {
             con.setRequestMethod("GET");

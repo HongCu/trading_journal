@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Getter @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Builder
 @ToString
 public class News {
 
@@ -17,10 +16,14 @@ public class News {
     @Column(name = "news_id", nullable = false)
     private Long news_id;
 
+    @Column(name = "title")
     private String title;
+    @Column(name = "description")
     private String description;
+    @Column(name = "link", unique=true, length = 200)
     private String originalLink;
 
+    @Builder
     public News(String title, String description, String originalLink) {
         this.title = title;
         this.description = description;
