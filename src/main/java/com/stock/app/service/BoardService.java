@@ -1,7 +1,9 @@
 package com.stock.app.service;
 
 import com.stock.app.dto.BoardDto;
+import com.stock.app.dto.NewsDto;
 import com.stock.app.entity.Board;
+import com.stock.app.entity.News;
 import com.stock.app.repository.BoardRepository;
 import org.springframework.stereotype.Service;
 
@@ -57,5 +59,23 @@ public class BoardService {
     @Transactional
     public void deletePost(Long id) {
         boardRepository.deleteById(id);
+    }
+
+    @Transactional
+    public List<BoardDto> searchBoard(String query) {
+        List<Board> boardList = boardRepository.findByTitleContainingOrContentContaining(query, query);
+        List<BoardDto> boardDtoList = new ArrayList<>();
+
+        for(Board board : boardList) {
+            BoardDto boardDto = BoardDto.builder()
+                    .id(board.getId())
+                    .country(board.getCountry())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .createdDate(board.getCreatedDate())
+                    .build();
+            boardDtoList.add(boardDto);
+        }
+        return boardDtoList;
     }
 }

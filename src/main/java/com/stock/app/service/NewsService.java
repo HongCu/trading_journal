@@ -17,10 +17,26 @@ public class NewsService {
 
     @Transactional
     public List<NewsDto> getNewsList() {
-        List<News> boardList = newsRepository.findAll();
+        List<News> newsList = newsRepository.findAll();
         List<NewsDto> newDtoList = new ArrayList<>();
 
-        for(News news : boardList) {
+        for(News news : newsList) {
+            NewsDto newsDto = NewsDto.builder()
+                    .title(news.getTitle())
+                    .description(news.getDescription())
+                    .originalLink(news.getOriginalLink())
+                    .build();
+            newDtoList.add(newsDto);
+        }
+        return newDtoList;
+    }
+
+    @Transactional
+    public List<NewsDto> searchNews(String query) {
+        List<News> newsList = newsRepository.findByTitleContainingOrDescriptionContaining(query, query);
+        List<NewsDto> newDtoList = new ArrayList<>();
+
+        for(News news : newsList) {
             NewsDto newsDto = NewsDto.builder()
                     .title(news.getTitle())
                     .description(news.getDescription())

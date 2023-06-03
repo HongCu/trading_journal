@@ -2,6 +2,7 @@ package com.stock.app.controller;
 
 
 import com.stock.app.dto.BoardDto;
+import com.stock.app.dto.NewsDto;
 import com.stock.app.service.BoardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,13 @@ public class BoardController {
     @GetMapping
     public String list(Model model) {
         List<BoardDto> boardDtoList = boardService.getBoardList();
+        model.addAttribute("postList", boardDtoList); // postList라는 이름으로 view에 boardDtoList를 넘겨주는 것
+        return "board/list.html";
+    }
+
+    @GetMapping("/search")
+    public String searchDocuments(@RequestParam("query") String query, Model model) {
+        List<BoardDto> boardDtoList = boardService.searchBoard(query);
         model.addAttribute("postList", boardDtoList); // postList라는 이름으로 view에 boardDtoList를 넘겨주는 것
         return "board/list.html";
     }
