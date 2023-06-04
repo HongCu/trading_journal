@@ -8,7 +8,7 @@
 <body>
 <header th:insert="common/header.html"></header>
 
-<!--여기는 관심 주식의 목록과 달력이 들어갈 것-->
+<!--여기는 메인페이지에서 보여줄 index(지수) 정보가 들어갈 것-->
 
 <div class="container">
     <table class="table">
@@ -20,9 +20,24 @@
         </thead>
         <tbody>
             <td>
+                <h4>주식 검색</h4>
+                <form action="/stock/search" method="get">
+                    <div class="form-group">
+                        <input type="text" name="query" class="form-control" placeholder="검색어를 입력하세요" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">검색</button>
+                </form>
+
                 <a th:href="@{/stock}">나의 관심주식 더보기</a>
             </td>
             <td>
+                <h4>매매일지 검색</h4>
+                <form action="/list/search" method="get">
+                    <div class="form-group">
+                        <input type="text" name="query" class="form-control" placeholder="검색어를 입력하세요" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">검색</button>
+                </form>
                 <a th:href="@{/list}">나의 매매일지 더보기</a>
             </td>
         </tr>
