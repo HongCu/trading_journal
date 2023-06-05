@@ -20,8 +20,16 @@
         </thead>
         <tbody>
             <td>
-                <h4>주식 검색</h4>
+                <h4>주식 뉴스 검색</h4>
                 <form action="/stock/search" method="get">
+                    <div class="form-group">
+                        <input type="text" name="query" class="form-control" placeholder="검색어를 입력하세요" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">검색</button>
+                </form>
+
+                <h4>주식 뉴스 넣기</h4>
+                <form action="/trading/scrap" method="get">
                     <div class="form-group">
                         <input type="text" name="query" class="form-control" placeholder="검색어를 입력하세요" />
                     </div>
