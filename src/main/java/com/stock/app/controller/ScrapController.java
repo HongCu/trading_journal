@@ -2,7 +2,9 @@ package com.stock.app.controller;
 
 import com.stock.app.dto.BoardDto;
 import com.stock.app.entity.News;
+import com.stock.app.entity.Stock;
 import com.stock.app.repository.NewsRepository;
+import com.stock.app.repository.StockRepository;
 import com.stock.app.service.ScraperService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,18 +22,25 @@ import java.util.Map;
 public class ScrapController {
     private final ScraperService scraperService;
     private final NewsRepository newsRepository;
+    private final StockRepository stockRepository;
 
 
     @GetMapping("/scrap")
-    public String scrapNews(@RequestParam String query) throws Exception {
+    public String scrapNews(@RequestParam String query) {
 
-        String[] fields = {"title", "originallink", "description"};
-        scraperService.scrap(query, fields);
-
-        return "redirect:/";
+        try {
+            // query Stock table에 추가
+            stockRepository.save(new Stock(query));
+            String[] fields = {"title", "originallink", "description"};
+            scraperService.scrap(query, fields);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/";
+        }
+            return "redirect:/";
     }
 
-    
+
     @GetMapping("/all")
     public ResponseEntity<List<News>> getAllData() {
         List<News> dataList = newsRepository.findAll();
@@ -39,6 +48,6 @@ public class ScrapController {
     }
 
     /**
-     * Todo : 수집된 뉴스 불러오기.
+     * Todo : 수집된 주식 목록 불러오기.
      */
 }

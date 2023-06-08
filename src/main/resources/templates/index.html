@@ -28,15 +28,15 @@
                     <button type="submit" class="btn btn-primary">검색</button>
                 </form>
 
-                <h4>주식 뉴스 넣기</h4>
-                <form action="/trading/scrap" method="get">
+                <h4>주식 추가</h4>
+                <form action="/stock/scrap" method="get">
                     <div class="form-group">
                         <input type="text" name="query" class="form-control" placeholder="검색어를 입력하세요" />
                     </div>
                     <button type="submit" class="btn btn-primary">검색</button>
                 </form>
 
-                <a th:href="@{/stock}">나의 관심주식 더보기</a>
+                <a th:href="@{/stock/list}">나의 관심주식 더보기</a>
             </td>
             <td>
                 <h4>매매일지 검색</h4>

@@ -2,16 +2,19 @@ package com.stock.app.service;
 
 import com.stock.app.config.NaverAPIConfig;
 import com.stock.app.entity.News;
+import com.stock.app.exception.DbException;
+import com.stock.app.exception.DuplicateKeyException;
 import com.stock.app.repository.NewsRepository;
 import com.stock.app.service.scraper.NewsScraperImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +27,7 @@ public class ScraperService {
     private final NewsScraperImpl newsScraper;
     private final NewsRepository newsRepository;
 
-    public Map<String, Object> scrap(String text, String[] fields) {
+    public void scrap(String text, String[] fields) {
         String clientId = NaverAPIConfig.client.getId();
         String clientSecret = NaverAPIConfig.client.getSecret();
 
@@ -44,17 +47,14 @@ public class ScraperService {
         Map<String, Object> response = newsScraper.getResult(responseBody, fields);
 
         saveNewsMap(response);
-
-
-        return response;
-    }
-
-    public News saveNews(final News newNews) throws SQLIntegrityConstraintViolationException {
-        if(newNews == null) throw new IllegalArgumentException("News cannot be null");
-        return newsRepository.save(newNews);
     }
 
     @Transactional
+    public void saveNews(News newNews) throws SQLException {
+        if(newNews == null) throw new IllegalArgumentException("News cannot be null");
+            newsRepository.save(newNews);
+        }
+
     public void saveNewsMap(Map<String, Object> response) {
         // response에서 값 추출하여 저장
         List<Map<String, Object>> resultList = (List<Map<String, Object>>) response.get("result");
@@ -74,11 +74,12 @@ public class ScraperService {
              */
             try {
                 saveNews(news);
-            } catch (SQLIntegrityConstraintViolationException e) {
-                log.error("중복된 데이터 들어옴");
-                return;
-            } catch (IllegalArgumentException e) {
-                log.info("null 불가능");
+            } catch (DataIntegrityViolationException e) {
+                log.error("중복된 데이터");
+                continue;
+
+            } catch (SQLException e) {
+                throw new DbException(e);
             }
 
             News byId = newsRepository.findById(news.getNews_id()).get();

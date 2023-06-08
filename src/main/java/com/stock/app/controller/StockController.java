@@ -1,7 +1,9 @@
 package com.stock.app.controller;
 
 import com.stock.app.dto.NewsDto;
+import com.stock.app.dto.StockDto;
 import com.stock.app.service.NewsService;
+import com.stock.app.service.StockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import java.util.List;
 @RequestMapping(value = "/stock")
 public class StockController {
     private final NewsService newsService;
+    private final StockService stockService;
 
     /**
      * TODO : 어떤 기능 넣을지 정하기
@@ -32,10 +35,17 @@ public class StockController {
         return "trade/news/list.html";
     }
 
-    @GetMapping
-    public String list(Model model) {
+    @GetMapping("/news")
+    public String newsList(Model model) {
         List<NewsDto> newsDtoList = newsService.getNewsList();
         model.addAttribute("newsList", newsDtoList); // postList라는 이름으로 view에 boardDtoList를 넘겨주는 것
         return "trade/news/list.html";
+    }
+
+    @GetMapping("/list")
+    public String stockList(Model model) {
+        List<StockDto> stockDtoList = stockService.getStockList();
+        model.addAttribute("stockList", stockDtoList); // postList라는 이름으로 view에 boardDtoList를 넘겨주는 것
+        return "trade/stock/list.html";
     }
 }
