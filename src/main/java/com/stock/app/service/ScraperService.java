@@ -2,9 +2,11 @@ package com.stock.app.service;
 
 import com.stock.app.config.NaverAPIConfig;
 import com.stock.app.entity.News;
+import com.stock.app.entity.Stock;
 import com.stock.app.exception.DbException;
 import com.stock.app.exception.DuplicateKeyException;
 import com.stock.app.repository.NewsRepository;
+import com.stock.app.repository.StockRepository;
 import com.stock.app.service.scraper.NewsScraperImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,7 @@ public class ScraperService {
 
     private final NewsScraperImpl newsScraper;
     private final NewsRepository newsRepository;
+    private final StockRepository stockRepository;
 
     public void scrap(String text, String[] fields) {
         String clientId = NaverAPIConfig.client.getId();
@@ -54,6 +57,11 @@ public class ScraperService {
         if(newNews == null) throw new IllegalArgumentException("News cannot be null");
             newsRepository.save(newNews);
         }
+    @Transactional
+    public void saveStock(Stock stock) throws SQLException {
+        if(stock == null) throw new IllegalArgumentException("News cannot be null");
+            stockRepository.save(stock);
+    }
 
     public void saveNewsMap(Map<String, Object> response) {
         // response에서 값 추출하여 저장

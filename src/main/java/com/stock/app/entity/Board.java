@@ -1,9 +1,6 @@
 package com.stock.app.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -11,10 +8,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Getter
+@Getter @Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class) /* JPA에게 해당 Entity는 Auditiong 기능을 사용함을 알립니다. */
+@EntityListeners(AuditingEntityListener.class)
 public class Board {
 
     @Id
@@ -31,11 +28,21 @@ public class Board {
     private String content;
 
     @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdDate;
+    @Column(name = "created_time")
+    private LocalDateTime createdTime;
 
     @LastModifiedDate
     private LocalDateTime modifiedDate;
+
+    @Column(name = "good_point")
+    private String goodPoint;
+
+    @Column(name = "bad_point")
+    private String badPoint;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stock_id")
+    private Stock stock;
 
     @Builder
     public Board(Long id, String country, String title, String content) {

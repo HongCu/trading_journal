@@ -23,6 +23,7 @@ public class News {
     @Column(name = "link", unique=true, length = 200)
     private String originalLink;
 
+
     @Builder
     public News(String title, String description, String originalLink) {
         this.title = title;

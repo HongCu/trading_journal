@@ -35,7 +35,7 @@ public class BoardService {
                     .country(board.getCountry())
                     .title(board.getTitle())
                     .content(board.getContent())
-                    .createdDate(board.getCreatedDate())
+                    .createdDate(board.getCreatedTime())
                     .build();
             boardDtoList.add(boardDto);
         }
@@ -51,7 +51,7 @@ public class BoardService {
                 .country(board.getCountry())
                 .title(board.getTitle())
                 .content(board.getContent())
-                .createdDate(board.getCreatedDate())
+                .createdDate(board.getCreatedTime())
                 .build();
         return boardDto;
     }
@@ -72,7 +72,7 @@ public class BoardService {
                     .country(board.getCountry())
                     .title(board.getTitle())
                     .content(board.getContent())
-                    .createdDate(board.getCreatedDate())
+                    .createdDate(board.getCreatedTime())
                     .build();
             boardDtoList.add(boardDto);
         }

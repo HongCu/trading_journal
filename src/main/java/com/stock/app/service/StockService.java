@@ -26,7 +26,7 @@ public class StockService {
 
         for(Stock stock : stockList) {
             StockDto stockDto = StockDto.builder()
-                    .stock_name(stock.getStock_name())
+                    .stock_name(stock.getStockName())
                     .build();
             stockDtoList.add(stockDto);
         }

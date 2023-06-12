@@ -4,10 +4,14 @@ import com.stock.app.dto.NewsDto;
 import com.stock.app.entity.News;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
 @Repository
 public interface NewsRepository extends JpaRepository<News, Long> {
     List<News> findByTitleContainingOrDescriptionContaining(String query, String query1);
+
+
 }
